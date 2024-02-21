@@ -1,5 +1,7 @@
 "use server";
 
+import prisma from "@/libs/prisma";
+
 import { API_URL } from "@/constants/api";
 import {
   ErrorScraperResponse,
@@ -12,6 +14,7 @@ async function submitIcampusCredintials(formData: FormData) {
   let isError = false;
   let errorMessage = "";
   let encodedCourses = "";
+  let fullName = "";
   try {
     const username = formData.get("username");
     const password = formData.get("password");
@@ -37,11 +40,20 @@ async function submitIcampusCredintials(formData: FormData) {
       }`;
     } else {
       const data = result as SuccessfullScraperResponse;
-      const courses = data.timetable.map((course) => {
+      const coursesCodes = data.timetable.map((course) => {
         return course["Course Code"];
       });
 
-      console.log(courses);
+      fullName = data.user.full_name;
+
+      console.log(coursesCodes);
+      const courses = await prisma.course.findMany({
+        where: {
+          code: {
+            in: coursesCodes,
+          },
+        },
+      });
 
       encodedCourses = encodeURIComponent(JSON.stringify(courses));
     }
@@ -54,7 +66,7 @@ async function submitIcampusCredintials(formData: FormData) {
   if (isError) {
     redirect(`/error?message=${errorMessage}`);
   } else if (encodedCourses) {
-    redirect(`/view_timetable?courses=${encodedCourses}`);
+    redirect(`/view_timetable?courses=${encodedCourses}&full_name=${fullName}`);
   } else {
     redirect(
       `/error?message=Unknown error occurred. Please try manually selecting your courses.`
