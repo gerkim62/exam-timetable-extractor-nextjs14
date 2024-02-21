@@ -66,6 +66,7 @@ async function submitIcampusCredintials(formData: FormData) {
   if (isError) {
     redirect(`/error?message=${errorMessage}`);
   } else if (encodedCourses) {
+    console.log(`redirecting to /view_timetable?courses=${encodedCourses}`);
     redirect(`/view_timetable?courses=${encodedCourses}&full_name=${fullName}`);
   } else {
     redirect(
