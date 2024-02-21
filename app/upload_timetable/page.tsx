@@ -41,7 +41,7 @@ function UploadTimetablePage() {
               htmlFor="uploaderName"
               className="block text-sm font-medium text-gray-300"
             >
-              Uploader's Name
+              Uploader&#39;s Name
             </label>
             <input
               required
