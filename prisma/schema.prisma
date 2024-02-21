@@ -34,5 +34,5 @@ model Course {
   timetable   Timetable? @relation(fields: [timetableId], references: [id])
   timetableId String?    @db.ObjectId
 
-  @@unique([code, option])
+  @@unique([code, option, startTime, endTime, timetableId])
 }

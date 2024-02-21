@@ -107,6 +107,22 @@ async function uploadTimetable(formData: FormData) {
 
     console.log(semester, title);
 
+    // check if the timetable has already been uploaded
+    const timetableExists = await prisma.timetable.findFirst({
+      where: {
+        semester,
+        title,
+      },
+    });
+
+    if (timetableExists) {
+      const timeInEAT = timetableExists.uploadedAt.toLocaleString("en-KE", {
+        timeZone: "Africa/Nairobi",
+      });
+      const message = `${timetableExists.title} for ${timetableExists.semester} already uploaded by ${timetableExists.uploaderName} on ${timeInEAT}`;
+      throw new Error(message);
+    }
+
     // example
     // {
     //     '0': 'Date',
@@ -155,7 +171,13 @@ async function uploadTimetable(formData: FormData) {
             venue: courseWith8Fields["7"],
           };
 
-          courses.push(course);
+          // check if course already added
+          const alreadyAdded = courseAlreadyAdded(course, courses);
+          if (alreadyAdded) {
+            console.log("course already added");
+          } else {
+            courses.push(course);
+          }
         } else if (fieldsCount === 9) {
           const isHeader = isTimetableHeaders(
             courseLikeObject as CourseWith9Fields | TimetableHeaders
@@ -185,7 +207,13 @@ async function uploadTimetable(formData: FormData) {
               venue: courseWith9Fields["8"],
             };
 
-            courses.push(course);
+            // check if course already added
+            const alreadyAdded = courseAlreadyAdded(course, courses);
+            if (alreadyAdded) {
+              console.log("course already added");
+            } else {
+              courses.push(course);
+            }
 
             lastDate = course.date;
             // console.log(course);
@@ -198,10 +226,32 @@ async function uploadTimetable(formData: FormData) {
       });
     });
 
-    console.log(courses);
+    // console.log(courses);
+
+    // this code was used to check for duplicate courses but now we are using the courseAlreadyAdded function before adding a course to the courses array so this may be irrelevant
+    // const groupedCourses = courses.reduce((acc, course) => {
+    //   const key = `${course.code}-${course.option}-${course.startTime}-${course.endTime}`;
+    //   if (!acc[key]) {
+    //     acc[key] = [];
+    //   }
+    //   acc[key].push(course);
+    //   return acc;
+    // }, {});
+
+    // const duplicateCourses = Object.values(groupedCourses).filter(
+    //   (group) => group.length > 1
+    // );
+
+    // console.log(duplicateCourses);
+    // console.log(duplicateCourses.length);
+
+    // const courseIdsWithDuplicates = duplicateCourses.map((group) => {
+    //   return group.map((course) => course.code);
+    // });
+
+    // console.log(courseIdsWithDuplicates);
 
     console.log("Creating in mongodb ...");
- 
 
     await createTimetableWithCoursesInBatches({
       semester,
@@ -309,6 +359,16 @@ async function createBatchOfCoursesAndAssociateWithTimetable({
       timetableId: timetable.id,
     })),
   });
+}
+
+function courseAlreadyAdded(course: Course, courses: Course[]) {
+  return courses.some(
+    (c) =>
+      c.code === course.code &&
+      c.startTime === course.startTime &&
+      c.endTime === course.endTime &&
+      c.option === course.option
+  );
 }
 
 export default uploadTimetable;
