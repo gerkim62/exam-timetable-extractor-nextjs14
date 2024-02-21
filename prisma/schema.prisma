@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Timetable {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  semester     String
+  uploaderName String
+  courses      Course[]
+  uploadedAt   DateTime @default(now())
+
+  @@unique([title, semester])
+}
+
+model Course {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  date       String
+  startTime  String
+  endTime    String
+  code       String
+  title      String
+  option     String
+  instructor String
+  building   String
+  venue      String
+
+  // relationship
+  timetable   Timetable? @relation(fields: [timetableId], references: [id])
+  timetableId String?    @db.ObjectId
+
+  @@unique([code, option])
+}
