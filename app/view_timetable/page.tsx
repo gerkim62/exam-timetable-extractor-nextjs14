@@ -93,6 +93,7 @@ const Page = () => {
 
   //redirect to error page if no courses are found
   useEffect(() => {
+    
     if (noCourses) {
       router.replace("/");
     }
