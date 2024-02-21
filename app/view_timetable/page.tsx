@@ -21,11 +21,5 @@ export default async function ViewTimetablePage({
 
   console.log(courses);
 
-  return (
-    <h1>
-      {courseIds?.map((course) => {
-        return <p>{course}</p>;
-      })}
-    </h1>
-  );
+  return <h1>Your timetable will be displayed here</h1>;
 }
