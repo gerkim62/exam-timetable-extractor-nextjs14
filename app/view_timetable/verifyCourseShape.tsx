@@ -2,6 +2,7 @@
 import { Course } from "@/types";
 
 export function verifyCourseShape(course: Course) {
+  // return true;
   // Define the expected shape
   const expectedShape = {
     id: "65d63625404315ebdac0cada",
@@ -20,6 +21,7 @@ export function verifyCourseShape(course: Course) {
   // Check if all keys in expectedShape are present in obj
   for (let key in expectedShape) {
     if (!(key in course)) {
+      console.log(`key not in course:`, key);
       return false;
     }
   }
@@ -27,7 +29,8 @@ export function verifyCourseShape(course: Course) {
   // Check if the types of values match the expected types
   for (let key in expectedShape) {
     // @ts-ignore
-    if (typeof course[key] !== expectedShape[key]) {
+    if (typeof course[key] !== typeof expectedShape[key]) {
+      console.log(`key not same type:`);
       return false;
     }
   }

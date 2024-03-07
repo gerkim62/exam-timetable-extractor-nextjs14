@@ -18,6 +18,11 @@ const Page = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [noCourses, setNoCourses] = useState(false);
+  const [hasClash, setHasClash] = useState(false);
+
+  const [coursesWithMultipleGroups, setCoursesWithMultipleGroups] = useState<
+    Course[][]
+  >([]);
 
   function getCoursesFromSearchParams(searchParams: URLSearchParams) {
     const coursesParam = searchParams.get("courses");
@@ -86,26 +91,24 @@ const Page = () => {
     }
 
     setCourses(courses);
-    console.log(courses);
+    console.log(courses.map((course) => course.code));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, searchParams]);
 
   //redirect to error page if no courses are found
   useEffect(() => {
-    
     if (noCourses) {
       router.replace("/");
     }
   }, [noCourses]);
 
+ 
+
   return (
     <div className="p-4 w-[100vw] overflow-auto">
       <h1 className="text-2xl font-semibold mb-4  !text-center fixed left-0 right-0 ">
-        Your Timetable{" "}
-        <span role="img" aria-label="timetable">
-          
-        </span>
+        Your Timetable <span role="img" aria-label="timetable"></span>
       </h1>
       {/* placeholder since above is fixed, transparent */}
       <div className="h-12 opacity-0">j</div>
@@ -113,8 +116,6 @@ const Page = () => {
         <div className="flex">
           <Timetable
             courses={courses}
-            setSelectedCourse={setSelectedCourse}
-            fullName={full_name}
           />
           <div className="">...</div>
         </div>
@@ -122,10 +123,12 @@ const Page = () => {
         <Loading />
       )}
 
-      <Popup
-        message="Click on the Course Code to view course details."
-        id="courseDetails"
-      />
+      {hasClash && (
+        <Popup
+          message="You have a clash in your timetable. Click on the  ''View clashing Exams'' to view."
+          id="clash"
+        />
+      )}
 
       {selectedCourse && (
         <div

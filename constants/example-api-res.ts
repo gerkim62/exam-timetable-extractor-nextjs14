@@ -1,0 +1,85 @@
+import { SuccessfullScraperResponse } from "@/types";
+
+const successResponse: SuccessfullScraperResponse = {
+  timetable: [
+    {
+      "SR. No": "1",
+      "Course Code": "COSC241",
+      "Course Title": "Software Architecture and Design",
+      Credit: "3",
+      Lecturer: "Mr. MBATA KEVIN MAYAKA",
+      Room: "L105A (Computer Lab A) - Library",
+      Days: ["tue", "thu"],
+      Start: "06:30",
+      End: "08:00",
+    },
+    {
+      "SR. No": "2",
+      "Course Code": "COSC272",
+      "Course Title": "OBJECT ORIENTED DESIGN AND PROGRAMMING",
+      Credit: "3",
+      Lecturer: "Mr. MBATA KEVIN MAYAKA",
+      Room: "Humanities Lab - Humanities",
+      Days: ["mon", "wed"],
+      Start: "06:30",
+      End: "08:00",
+    },
+    {
+      "SR. No": "3",
+      "Course Code": "COSC238",
+      "Course Title": "PROFESSIONAL PRACTICES IN IT",
+      Credit: "3",
+      Lecturer: "Mrs. NJOROGE ROSELINE NYAMWAMU",
+      Room: "L105B (Computer Lab B) - Library",
+      Days: ["mon", "wed"],
+      Start: "09:00",
+      End: "10:00",
+    },
+    {
+      "SR. No": "4",
+      "Course Code": "COSC222",
+      "Course Title": "FUNDAMENTALS OF SOFTWARE ENGINEERING",
+      Credit: "3",
+      Lecturer: "Mr. MBATA KEVIN MAYAKA",
+      Room: "L105A (Computer Lab A) - Library",
+      Days: ["mon", "wed", "fri"],
+      Start: "11:00",
+      End: "12:00",
+    },
+    {
+      "SR. No": "5",
+      "Course Code": "COSC217",
+      "Course Title": "INTRODUCTION TO LINUX ADMINISTRATION",
+      Credit: "3",
+      Lecturer: "Mr. MBATA KEVIN MAYAKA",
+      Room: "Humanities Lab - Humanities",
+      Days: ["tue", "thu"],
+      Start: "14:00",
+      End: "15:30",
+    },
+    {
+      "SR. No": "6",
+      "Course Code": "COSC343",
+      "Course Title": "FOUNDATIONS OF HUMAN COMPUTER INTERACTIONS",
+      Credit: "3",
+      Lecturer: "Mr. OMAMBIA ANDREW AUNDA OMAMBIA",
+      Room: "L105C (Computer Lab C) - Library",
+      Days: ["mon", "wed"],
+      Start: "16:00",
+      End: "17:00",
+    },
+  ],
+  time_taken: {
+    browser_launch: 2427,
+    login: 12404,
+    fetch_timetable: 345,
+  },
+  error: {
+    exists: false,
+  },
+  user: {
+    full_name: "John Doe",
+  },
+};
+
+export default successResponse;

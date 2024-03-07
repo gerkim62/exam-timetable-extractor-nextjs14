@@ -11,6 +11,9 @@ function ErrorPage({ searchParams }: { searchParams?: { message?: string } }) {
           Oops! Something went wrong
         </h2>
         <p className="text-lg mb-4 text-center">{errorMessage}</p>
+        <p className="text-xs mb-4 text-center">
+          You can go to home and choose to enter courses manually instead
+        </p>
         <div className="flex justify-center">
           <Link
             href="/"
